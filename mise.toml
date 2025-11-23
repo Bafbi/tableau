@@ -1,3 +1,37 @@
 [tools]
 go = "latest"
 golangci-lint = "latest"
+
+[tasks.reset]
+description = "Reset tableau dev state"
+env = { TABLEAU_DIR = ".tableau_dev" }
+run = "rm -rf .tableau_dev && go run ./cmd/tableau init"
+
+[tasks.build]
+description = "Build the tableau binary"
+run = "go build -o bin/tableau ./cmd/tableau"
+sources = ["**/*.go", "go.mod", "go.sum"]
+outputs = ["bin/tableau"]
+
+[tasks.test]
+description = "Run all tests"
+run = "go test ./..."
+sources = ["**/*.go", "go.mod", "go.sum"]
+
+[tasks.lint]
+description = "Run linter"
+run = "golangci-lint run"
+sources = ["**/*.go", "go.mod", "go.sum"]
+
+[tasks.clean]
+description = "Clean build artifacts"
+run = "rm -rf bin/"
+
+[tasks.demo]
+description = "Run a demo scenario (reset, create task, list)"
+depends = ["reset", "build"]
+env = { TABLEAU_DIR = ".tableau_dev" }
+run = """
+./bin/tableau new "Demo Task"
+./bin/tableau list
+"""

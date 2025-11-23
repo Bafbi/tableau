@@ -1,3 +1,9 @@
 /bin/
 /dist/
 vendor/
+
+# Temporary Plans
+IMPLEMENTATION_PLAN.md
+
+# Dev/Test Data
+.tableau_dev/
