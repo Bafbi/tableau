@@ -114,7 +114,7 @@ func (r *FSRepository) List() ([]domain.Task, error) {
 			continue // Skip unreadable files
 		}
 		task, err := ParseTask(file)
-		file.Close()
+		_ = file.Close()
 		if err != nil {
 			continue // Skip unparseable files
 		}

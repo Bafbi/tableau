@@ -19,7 +19,7 @@ var (
 			Height(20).
 			Width(30)
 
-	FocusedColumnStyle = ColumnStyle.Copy().
+	FocusedColumnStyle = ColumnStyle.
 				BorderForeground(ColorPrimary)
 
 	TaskStyle = lipgloss.NewStyle().
@@ -27,7 +27,7 @@ var (
 			Border(lipgloss.NormalBorder(), false, false, false, true).
 			BorderForeground(ColorGray)
 
-	SelectedTaskStyle = TaskStyle.Copy().
+	SelectedTaskStyle = TaskStyle.
 				BorderForeground(ColorSecondary).
 				Foreground(ColorSecondary)
 

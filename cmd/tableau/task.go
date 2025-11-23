@@ -39,7 +39,7 @@ var newCmd = &cobra.Command{
 		if err := r.Create(task); err != nil {
 			return err
 		}
-		fmt.Fprintf(cmd.OutOrStdout(), "Created task %d: %s\n", task.ID, task.Title)
+		_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Created task %d: %s\n", task.ID, task.Title)
 		return nil
 	},
 }
@@ -67,14 +67,14 @@ var listCmd = &cobra.Command{
 		}
 
 		w := tabwriter.NewWriter(cmd.OutOrStdout(), 0, 0, 2, ' ', 0)
-		fmt.Fprintln(w, "ID\tTitle\tStatus\tPriority")
+		_, _ = fmt.Fprintln(w, "ID\tTitle\tStatus\tPriority")
 		for _, t := range tasks {
 			if len(args) > 0 && !query.Matches(t, filter) {
 				continue
 			}
-			fmt.Fprintf(w, "%d\t%s\t%s\t%s\n", t.ID, t.Title, t.Status, t.Priority)
+			_, _ = fmt.Fprintf(w, "%d\t%s\t%s\t%s\n", t.ID, t.Title, t.Status, t.Priority)
 		}
-		w.Flush()
+		_ = w.Flush()
 		return nil
 	},
 }
@@ -171,7 +171,7 @@ var commentCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Fprintf(cmd.OutOrStdout(), "Comment added to task %d\n", task.ID)
+		_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Comment added to task %d\n", task.ID)
 		return nil
 	},
 }
@@ -202,7 +202,7 @@ func setBlocked(cmd *cobra.Command, idStr string, blocked bool) error {
 	if !blocked {
 		status = "unblocked"
 	}
-	fmt.Fprintf(cmd.OutOrStdout(), "Task %d %s\n", task.ID, status)
+	_, _ = fmt.Fprintf(cmd.OutOrStdout(), "Task %d %s\n", task.ID, status)
 	return nil
 }
 

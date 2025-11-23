@@ -26,14 +26,14 @@ func TestCLIIntegration(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer os.RemoveAll(tmpDir)
+	defer func() { _ = os.RemoveAll(tmpDir) }()
 
 	// Override TABLEAU_DIR env var for the test process
 	// Note: This affects the global state, so parallel tests might be an issue if we ran them.
 	// But for this sequence it's fine.
 	// However, the repo adapter reads os.Getenv("TABLEAU_DIR") inside NewFSRepository.
 	// We need to make sure we set it before running commands.
-	os.Setenv("TABLEAU_DIR", ".tableau_test")
+	_ = os.Setenv("TABLEAU_DIR", ".tableau_test")
 	
 	// We need to change the CWD to the tmpDir so that NewFSRepository(cwd) works as expected
 	// relative to the "project root".
@@ -45,7 +45,7 @@ func TestCLIIntegration(t *testing.T) {
 	if err := os.Chdir(tmpDir); err != nil {
 		t.Fatal(err)
 	}
-	defer os.Chdir(originalWd)
+	defer func() { _ = os.Chdir(originalWd) }()
 
 	// 1. Init
 	out, err := executeCommand(rootCmd, "init")
