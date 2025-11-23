@@ -8,7 +8,9 @@ import (
 	"strconv"
 	"strings"
 	"text/tabwriter"
+	"time"
 
+	"github.com/bafbi/tableau/internal/adapters/git"
 	"github.com/bafbi/tableau/internal/adapters/repo"
 	"github.com/bafbi/tableau/internal/domain"
 	"github.com/bafbi/tableau/internal/domain/query"
@@ -130,6 +132,50 @@ var unblockCmd = &cobra.Command{
 	},
 }
 
+var commentCmd = &cobra.Command{
+	Use:   "comment [id] [text]",
+	Short: "Add a comment to a task",
+	Args:  cobra.MinimumNArgs(2),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		id, err := strconv.Atoi(args[0])
+		if err != nil {
+			return fmt.Errorf("invalid id: %s", args[0])
+		}
+		text := strings.Join(args[1:], " ")
+
+		cwd, err := os.Getwd()
+		if err != nil {
+			return err
+		}
+		r := repo.NewFSRepository(cwd)
+		
+		task, err := r.Get(id)
+		if err != nil {
+			return err
+		}
+
+		g := git.NewClient()
+		author, _ := g.GetUserName()
+		if author == "" {
+			author = "Unknown"
+		}
+
+		comment := domain.Comment{
+			Author:    author,
+			Text:      text,
+			CreatedAt: time.Now(),
+		}
+		task.Comments = append(task.Comments, comment)
+
+		if err := r.Update(task); err != nil {
+			return err
+		}
+		
+		fmt.Printf("Comment added to task %d\n", task.ID)
+		return nil
+	},
+}
+
 func setBlocked(idStr string, blocked bool) error {
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -166,4 +212,5 @@ func init() {
 	rootCmd.AddCommand(editCmd)
 	rootCmd.AddCommand(blockCmd)
 	rootCmd.AddCommand(unblockCmd)
+	rootCmd.AddCommand(commentCmd)
 }

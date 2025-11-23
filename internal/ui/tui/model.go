@@ -1,6 +1,8 @@
 package tui
 
 import (
+	"fmt"
+
 	"github.com/bafbi/tableau/internal/config"
 	"github.com/bafbi/tableau/internal/domain"
 	"github.com/charmbracelet/bubbles/viewport"
@@ -198,6 +200,14 @@ func (m Model) openDetail() (tea.Model, tea.Cmd) {
 	}
 
 	content := "# " + task.Title + "\n\n" + task.Description
+	
+	if len(task.Comments) > 0 {
+		content += "\n\n## Comments\n"
+		for _, c := range task.Comments {
+			content += fmt.Sprintf("\n**%s** (%s):\n%s\n", c.Author, c.CreatedAt.Format("2006-01-02 15:04"), c.Text)
+		}
+	}
+
 	str, err := renderer.Render(content)
 	if err != nil {
 		m.Err = err

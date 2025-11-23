@@ -36,3 +36,16 @@ func (c *Client) BranchExists(branch string) bool {
 	err := exec.Command("git", "rev-parse", "--verify", branch).Run()
 	return err == nil
 }
+
+func (c *Client) GetUserName() (string, error) {
+	slog.Debug("Running git config user.name")
+	out, err := exec.Command("git", "config", "user.name").Output()
+	if err != nil {
+		return "Unknown", nil
+	}
+	name := strings.TrimSpace(string(out))
+	if name == "" {
+		return "Unknown", nil
+	}
+	return name, nil
+}

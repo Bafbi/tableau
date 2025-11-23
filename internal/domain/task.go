@@ -31,10 +31,17 @@ type Task struct {
 	Assignee    string    `toml:"assignee,omitempty"`
 	Branch      string    `toml:"branch,omitempty"`
 	Blocked     bool      `toml:"blocked"`
+	Comments    []Comment `toml:"comments,omitempty"`
 	CreatedAt   time.Time `toml:"created_at"`
 	UpdatedAt   time.Time `toml:"updated_at"`
 	Description string    `toml:"-"` // Content of the markdown file
 	FilePath    string    `toml:"-"` // Path to the file
+}
+
+type Comment struct {
+	Author    string    `toml:"author"`
+	Text      string    `toml:"text"`
+	CreatedAt time.Time `toml:"created_at"`
 }
 
 type TaskRepository interface {
