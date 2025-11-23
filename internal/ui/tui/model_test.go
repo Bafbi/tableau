@@ -13,12 +13,12 @@ type MockRepo struct {
 	tasks []domain.Task
 }
 
-func (m *MockRepo) Init() error { return nil }
+func (m *MockRepo) Init() error                        { return nil }
 func (m *MockRepo) LoadConfig() (config.Config, error) { return config.Default(), nil }
-func (m *MockRepo) Create(task *domain.Task) error { return nil }
-func (m *MockRepo) List() ([]domain.Task, error) { return m.tasks, nil }
-func (m *MockRepo) Get(id int) (*domain.Task, error) { return nil, nil }
-func (m *MockRepo) Update(task *domain.Task) error { return nil }
+func (m *MockRepo) Create(task *domain.Task) error     { return nil }
+func (m *MockRepo) List() ([]domain.Task, error)       { return m.tasks, nil }
+func (m *MockRepo) Get(id int) (*domain.Task, error)   { return nil, nil }
+func (m *MockRepo) Update(task *domain.Task) error     { return nil }
 
 func TestModelUpdate(t *testing.T) {
 	repo := &MockRepo{
@@ -29,12 +29,12 @@ func TestModelUpdate(t *testing.T) {
 	}
 
 	model := NewModel(repo)
-	
+
 	// Simulate Init (loading tasks)
 	// We manually trigger the tasksLoadedMsg because Init returns a Cmd
 	tasks, _ := repo.List()
 	model.Update(tasksLoadedMsg(tasks))
-	
+
 	// Verify initial state
 	if len(model.Columns[0].Tasks) != 1 {
 		t.Errorf("Expected 1 task in Todo, got %d", len(model.Columns[0].Tasks))

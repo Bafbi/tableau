@@ -34,13 +34,13 @@ func TestCLIIntegration(t *testing.T) {
 	// However, the repo adapter reads os.Getenv("TABLEAU_DIR") inside NewFSRepository.
 	// We need to make sure we set it before running commands.
 	_ = os.Setenv("TABLEAU_DIR", ".tableau_test")
-	
+
 	// We need to change the CWD to the tmpDir so that NewFSRepository(cwd) works as expected
 	// relative to the "project root".
 	// Actually, NewFSRepository takes rootDir.
 	// The commands use os.Getwd().
 	// So we should change CWD to tmpDir.
-	
+
 	originalWd, _ := os.Getwd()
 	if err := os.Chdir(tmpDir); err != nil {
 		t.Fatal(err)
