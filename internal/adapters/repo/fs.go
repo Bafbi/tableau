@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/bafbi/tableau/internal/config"
 	"github.com/bafbi/tableau/internal/domain"
 )
 
@@ -16,6 +17,7 @@ const (
 	DefaultTableauDir = ".tableau"
 	TasksDir          = "tasks"
 	MetaFile          = ".meta"
+	ConfigFile        = "config.toml"
 )
 
 type FSRepository struct {
@@ -32,6 +34,11 @@ func NewFSRepository(rootDir string) *FSRepository {
 		RootDir: rootDir,
 		DirName: dirName,
 	}
+}
+
+func (r *FSRepository) LoadConfig() (config.Config, error) {
+	configPath := filepath.Join(r.RootDir, r.DirName, ConfigFile)
+	return config.Load(configPath)
 }
 
 func (r *FSRepository) Init() error {

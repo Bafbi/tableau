@@ -1,6 +1,10 @@
 package domain
 
-import "time"
+import (
+	"time"
+
+	"github.com/bafbi/tableau/internal/config"
+)
 
 type Priority string
 
@@ -26,6 +30,7 @@ type Task struct {
 	Labels      []string  `toml:"labels"`
 	Assignee    string    `toml:"assignee,omitempty"`
 	Branch      string    `toml:"branch,omitempty"`
+	Blocked     bool      `toml:"blocked"`
 	CreatedAt   time.Time `toml:"created_at"`
 	UpdatedAt   time.Time `toml:"updated_at"`
 	Description string    `toml:"-"` // Content of the markdown file
@@ -34,6 +39,7 @@ type Task struct {
 
 type TaskRepository interface {
 	Init() error
+	LoadConfig() (config.Config, error)
 	Create(task *Task) error
 	List() ([]Task, error)
 	Get(id int) (*Task, error)

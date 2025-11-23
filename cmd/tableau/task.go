@@ -112,8 +112,58 @@ var editCmd = &cobra.Command{
 	},
 }
 
+var blockCmd = &cobra.Command{
+	Use:   "block [id]",
+	Short: "Mark a task as blocked",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return setBlocked(args[0], true)
+	},
+}
+
+var unblockCmd = &cobra.Command{
+	Use:   "unblock [id]",
+	Short: "Mark a task as unblocked",
+	Args:  cobra.ExactArgs(1),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return setBlocked(args[0], false)
+	},
+}
+
+func setBlocked(idStr string, blocked bool) error {
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		return fmt.Errorf("invalid id: %s", idStr)
+	}
+
+	cwd, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	r := repo.NewFSRepository(cwd)
+	
+	task, err := r.Get(id)
+	if err != nil {
+		return err
+	}
+	
+	task.Blocked = blocked
+	if err := r.Update(task); err != nil {
+		return err
+	}
+	
+	status := "blocked"
+	if !blocked {
+		status = "unblocked"
+	}
+	fmt.Printf("Task %d %s\n", task.ID, status)
+	return nil
+}
+
 func init() {
 	rootCmd.AddCommand(newCmd)
 	rootCmd.AddCommand(listCmd)
 	rootCmd.AddCommand(editCmd)
+	rootCmd.AddCommand(blockCmd)
+	rootCmd.AddCommand(unblockCmd)
 }

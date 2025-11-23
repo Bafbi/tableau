@@ -74,11 +74,16 @@ func (c Column) View() string {
 
 	// Render Tasks
 	for i, t := range c.Tasks {
+		prefix := "  "
+		if t.Blocked {
+			prefix = "🔒"
+		}
+		
 		taskStr := fmt.Sprintf("#%d %s", t.ID, t.Title)
 		if i == c.Cursor && c.Focused {
-			out += SelectedTaskStyle.Render("> " + taskStr) + "\n"
+			out += SelectedTaskStyle.Render("> " + prefix + taskStr) + "\n"
 		} else {
-			out += TaskStyle.Render("  " + taskStr) + "\n"
+			out += TaskStyle.Render(prefix + taskStr) + "\n"
 		}
 	}
 
