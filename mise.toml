@@ -35,3 +35,9 @@ run = """
 ./bin/tableau new "Demo Task"
 ./bin/tableau list
 """
+
+[tasks.dev]
+description = "Run tableau commands in dev environment (usage: mise run dev -- <args>)"
+depends = ["build"]
+env = { TABLEAU_DIR = ".tableau_dev" }
+run = "./bin/tableau"
