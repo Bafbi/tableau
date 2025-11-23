@@ -2,8 +2,9 @@
 /dist/
 vendor/
 
-# Temporary Plans
+# Temporary Plans / Walkthroughs
 IMPLEMENTATION_PLAN.md
+WALKTHROUGH.md
 
 # Dev/Test Data
 .tableau_dev/

@@ -31,10 +31,7 @@ run = "rm -rf bin/"
 description = "Run a demo scenario (reset, create task, list)"
 depends = ["reset", "build"]
 env = { TABLEAU_DIR = ".tableau_dev" }
-run = """
-./bin/tableau new "Demo Task"
-./bin/tableau list
-"""
+run = "./scripts/demo.sh"
 
 [tasks.dev]
 description = "Run tableau commands in dev environment"
