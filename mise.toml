@@ -37,7 +37,11 @@ run = """
 """
 
 [tasks.dev]
-description = "Run tableau commands in dev environment (usage: mise run dev -- <args>)"
+description = "Run tableau commands in dev environment"
 depends = ["build"]
 env = { TABLEAU_DIR = ".tableau_dev" }
-run = "./bin/tableau"
+usage = '''
+flag "--debug" help="Enable debug logging" negate="--no-debug" default="true"
+arg "[args]..." help="Tableau subcommands and arguments"
+'''
+run = './bin/tableau --debug="${usage_debug}" ${usage_args}'
