@@ -9,11 +9,14 @@ This document outlines the operational protocols for AI agents working on the cu
 *   **Tool Documentation:** If you are unsure about a tool's usage or capabilities, **always** ask for or fetch its documentation before proceeding. Do not guess flags or parameters.
 
 ## 2. Planning & Implementation
-*   **Implementation Plans:** Before writing code for a new feature, check if an implementation plan exists.
-    *   If **NO**: Create a detailed `IMPLEMENTATION_PLAN.md` first. This file is used to plan specific features or phases before implementation. **Do not commit this file.**
-    *   If **YES**: Follow the existing plan.
-*   **Global Plan:** `PLAN.md` tracks the high-level project goals and architecture. Keep it updated if architectural decisions change.
-*   **Plan Updates:** If a decision is made during the conversation that alters the agreed-upon approach, **immediately update** the relevant plan (`IMPLEMENTATION_PLAN.md` for details, `PLAN.md` for high-level) to reflect this change.
+*   **Mandatory Planning Phase:** Before writing any functional code for a new feature, you **MUST** create or update `IMPLEMENTATION_PLAN.md`.
+    1.  **Draft:** detailed specific steps, files to create/modify, and the verification strategy.
+    2.  **Review:** Present the plan to the user.
+    3.  **STOP & WAIT:** **Do not proceed** with coding until the user explicitly approves the plan.
+    4.  **No Commit:** Do not commit `IMPLEMENTATION_PLAN.md` to version control (add it to `.gitignore` if necessary).
+*   **Execution:** Once approved, follow the steps in `IMPLEMENTATION_PLAN.md` strictly.
+*   **Global Plan:** Maintain `PLAN.md` for high-level project goals and architecture. Ensure it stays synchronized with current progress.
+*   **Plan Updates:** If the user requests changes or a technical decision alters the agreed-upon approach during the conversation, **immediately update** `IMPLEMENTATION_PLAN.md` and ask for re-approval before continuing.
 
 ## 3. Git Workflow & Commits
 When asked to commit changes, follow this strict two-step process:
