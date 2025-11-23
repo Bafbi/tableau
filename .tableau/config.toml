@@ -1,0 +1,7 @@
+[project]
+name = "Tableau"
+
+[columns]
+todo = "To Do"
+doing = "In Progress"
+done = "Done"
