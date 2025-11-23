@@ -25,9 +25,11 @@ type Task struct {
 	Priority    Priority  `toml:"priority"`
 	Labels      []string  `toml:"labels"`
 	Assignee    string    `toml:"assignee,omitempty"`
+	Branch      string    `toml:"branch,omitempty"`
 	CreatedAt   time.Time `toml:"created_at"`
 	UpdatedAt   time.Time `toml:"updated_at"`
 	Description string    `toml:"-"` // Content of the markdown file
+	FilePath    string    `toml:"-"` // Path to the file
 }
 
 type TaskRepository interface {

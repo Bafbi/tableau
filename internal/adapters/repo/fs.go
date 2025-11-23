@@ -77,6 +77,8 @@ func (r *FSRepository) Create(task *domain.Task) error {
 	filename := fmt.Sprintf("%d-%s.md", task.ID, slug)
 	path := filepath.Join(r.RootDir, r.DirName, TasksDir, filename)
 
+	task.FilePath = path
+
 	data, err := MarshalTask(task)
 	if err != nil {
 		return err
@@ -107,6 +109,7 @@ func (r *FSRepository) List() ([]domain.Task, error) {
 		if err != nil {
 			continue // Skip unparseable files
 		}
+		task.FilePath = path
 		tasks = append(tasks, *task)
 	}
 	return tasks, nil
