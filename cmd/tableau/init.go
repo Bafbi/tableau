@@ -20,7 +20,7 @@ var initCmd = &cobra.Command{
 		if err := r.Init(); err != nil {
 			return err
 		}
-		fmt.Printf("Initialized tableau project in %s\n", r.DirName)
+		fmt.Fprintf(cmd.OutOrStdout(), "Initialized tableau project in %s\n", r.DirName)
 		return nil
 	},
 }

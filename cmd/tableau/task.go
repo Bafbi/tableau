@@ -39,7 +39,7 @@ var newCmd = &cobra.Command{
 		if err := r.Create(task); err != nil {
 			return err
 		}
-		fmt.Printf("Created task %d: %s\n", task.ID, task.Title)
+		fmt.Fprintf(cmd.OutOrStdout(), "Created task %d: %s\n", task.ID, task.Title)
 		return nil
 	},
 }
@@ -66,7 +66,7 @@ var listCmd = &cobra.Command{
 			slog.Debug("Listing all tasks")
 		}
 
-		w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+		w := tabwriter.NewWriter(cmd.OutOrStdout(), 0, 0, 2, ' ', 0)
 		fmt.Fprintln(w, "ID\tTitle\tStatus\tPriority")
 		for _, t := range tasks {
 			if len(args) > 0 && !query.Matches(t, filter) {
@@ -119,7 +119,7 @@ var blockCmd = &cobra.Command{
 	Short: "Mark a task as blocked",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return setBlocked(args[0], true)
+		return setBlocked(cmd, args[0], true)
 	},
 }
 
@@ -128,7 +128,7 @@ var unblockCmd = &cobra.Command{
 	Short: "Mark a task as unblocked",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return setBlocked(args[0], false)
+		return setBlocked(cmd, args[0], false)
 	},
 }
 
@@ -171,12 +171,12 @@ var commentCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Printf("Comment added to task %d\n", task.ID)
+		fmt.Fprintf(cmd.OutOrStdout(), "Comment added to task %d\n", task.ID)
 		return nil
 	},
 }
 
-func setBlocked(idStr string, blocked bool) error {
+func setBlocked(cmd *cobra.Command, idStr string, blocked bool) error {
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		return fmt.Errorf("invalid id: %s", idStr)
@@ -202,7 +202,7 @@ func setBlocked(idStr string, blocked bool) error {
 	if !blocked {
 		status = "unblocked"
 	}
-	fmt.Printf("Task %d %s\n", task.ID, status)
+	fmt.Fprintf(cmd.OutOrStdout(), "Task %d %s\n", task.ID, status)
 	return nil
 }
 

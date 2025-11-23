@@ -44,13 +44,13 @@ var startCmd = &cobra.Command{
 
 		if g.BranchExists(branchName) {
 			slog.Debug("Branch exists, checking out", "branch", branchName)
-			fmt.Printf("Switching to branch %s\n", branchName)
+			fmt.Fprintf(cmd.OutOrStdout(), "Switching to branch %s\n", branchName)
 			if err := g.Checkout(branchName); err != nil {
 				return err
 			}
 		} else {
 			slog.Debug("Creating new branch", "branch", branchName)
-			fmt.Printf("Creating branch %s\n", branchName)
+			fmt.Fprintf(cmd.OutOrStdout(), "Creating branch %s\n", branchName)
 			if err := g.CreateBranch(branchName); err != nil {
 				return err
 			}
@@ -63,7 +63,7 @@ var startCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Printf("Task %d started\n", task.ID)
+		fmt.Fprintf(cmd.OutOrStdout(), "Task %d started\n", task.ID)
 		return nil
 	},
 }
