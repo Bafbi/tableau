@@ -3,6 +3,7 @@ package repo
 import (
 	"bytes"
 	"io"
+	"strings"
 
 	"github.com/BurntSushi/toml"
 	"github.com/adrg/frontmatter"
@@ -15,7 +16,7 @@ func ParseTask(r io.Reader) (*domain.Task, error) {
 	if err != nil {
 		return nil, err
 	}
-	task.Description = string(body)
+	task.Description = strings.TrimSpace(string(body))
 	return &task, nil
 }
 

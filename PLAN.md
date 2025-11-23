@@ -184,8 +184,18 @@ The TUI needs a "Multi-Select" mode.
 *   [ ] Add `config.toml` support for custom columns.
 
 ### Phase 4: Polish
-*   [ ] Add "Blocked" logic (visual lock icon).
-*   [ ] Add support for rendering Markdown tables/lists inside the TUI detail view.
+*   [x] Add "Blocked" logic (visual lock icon).
+*   [x] Add support for rendering Markdown tables/lists inside the TUI detail view.
+
+### Phase 5: Comments & Collaboration
+*   [x] Add `Comment` struct to Task.
+*   [x] Implement `tableau comment` command.
+*   [x] Display comments in TUI Detail View.
+
+### Phase 6: Testing Strategy
+*   [ ] **Unit Tests**: Verify core logic (parsing, domain rules).
+*   [ ] **CLI Tests**: Verify command execution and side effects.
+*   [ ] **TUI Tests**: Verify UI state transitions.
 
 ---
 
