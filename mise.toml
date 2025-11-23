@@ -23,6 +23,11 @@ description = "Run linter"
 run = "golangci-lint run"
 sources = ["**/*.go", "go.mod", "go.sum"]
 
+[tasks.fmt]
+description = "Format code"
+run = "go fmt ./..."
+sources = ["**/*.go"]
+
 [tasks.clean]
 description = "Clean build artifacts"
 run = "rm -rf bin/"

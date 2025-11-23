@@ -27,14 +27,14 @@ var newCmd = &cobra.Command{
 			return err
 		}
 		r := repo.NewFSRepository(cwd)
-		
+
 		title := strings.Join(args, " ")
 		task := &domain.Task{
 			Title:    title,
 			Status:   domain.StatusTodo,
 			Priority: domain.PriorityMedium,
 		}
-		
+
 		slog.Debug("Creating task", "title", title)
 		if err := r.Create(task); err != nil {
 			return err
@@ -57,7 +57,7 @@ var listCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-		
+
 		var filter query.Filter
 		if len(args) > 0 {
 			filter = query.Parse(strings.Join(args, " "))
@@ -94,7 +94,7 @@ var editCmd = &cobra.Command{
 			return err
 		}
 		r := repo.NewFSRepository(cwd)
-		
+
 		task, err := r.Get(id)
 		if err != nil {
 			return err
@@ -148,7 +148,7 @@ var commentCmd = &cobra.Command{
 			return err
 		}
 		r := repo.NewFSRepository(cwd)
-		
+
 		task, err := r.Get(id)
 		if err != nil {
 			return err
@@ -170,7 +170,7 @@ var commentCmd = &cobra.Command{
 		if err := r.Update(task); err != nil {
 			return err
 		}
-		
+
 		fmt.Printf("Comment added to task %d\n", task.ID)
 		return nil
 	},
@@ -187,17 +187,17 @@ func setBlocked(idStr string, blocked bool) error {
 		return err
 	}
 	r := repo.NewFSRepository(cwd)
-	
+
 	task, err := r.Get(id)
 	if err != nil {
 		return err
 	}
-	
+
 	task.Blocked = blocked
 	if err := r.Update(task); err != nil {
 		return err
 	}
-	
+
 	status := "blocked"
 	if !blocked {
 		status = "unblocked"

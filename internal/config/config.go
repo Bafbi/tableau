@@ -59,7 +59,7 @@ func Load(path string) (Config, error) {
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		return cfg, nil
 	}
-	
+
 	if _, err := toml.DecodeFile(path, &cfg); err != nil {
 		return cfg, err
 	}

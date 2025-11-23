@@ -143,7 +143,7 @@ func (r *FSRepository) Update(task *domain.Task) error {
 	if err != nil {
 		return err
 	}
-	
+
 	var oldPath string
 	for _, f := range files {
 		if strings.HasPrefix(f.Name(), fmt.Sprintf("%d-", task.ID)) {
@@ -151,17 +151,17 @@ func (r *FSRepository) Update(task *domain.Task) error {
 			break
 		}
 	}
-	
+
 	if oldPath == "" {
 		return fmt.Errorf("task %d not found", task.ID)
 	}
-	
+
 	task.UpdatedAt = time.Now()
 	data, err := MarshalTask(task)
 	if err != nil {
 		return err
 	}
-	
+
 	slog.Debug("Updating task file", "path", oldPath)
 	return os.WriteFile(oldPath, data, 0644)
 }

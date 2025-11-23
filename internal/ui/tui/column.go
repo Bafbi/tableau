@@ -78,17 +78,17 @@ func (c Column) View() string {
 		if t.Blocked {
 			prefix = "🔒"
 		}
-		
+
 		taskStr := fmt.Sprintf("#%d %s", t.ID, t.Title)
 		if i == c.Cursor && c.Focused {
-			out += SelectedTaskStyle.Render("> " + prefix + taskStr) + "\n"
+			out += SelectedTaskStyle.Render("> "+prefix+taskStr) + "\n"
 		} else {
-			out += TaskStyle.Render(prefix + taskStr) + "\n"
+			out += TaskStyle.Render(prefix+taskStr) + "\n"
 		}
 	}
 
 	// Fill remaining height
 	// This is a bit naive, but works for MVP
-	
+
 	return style.Render(out)
 }

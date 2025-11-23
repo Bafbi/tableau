@@ -31,7 +31,7 @@ type Model struct {
 
 func NewModel(repo domain.TaskRepository) Model {
 	cfg, _ := repo.LoadConfig() // Best effort load
-	
+
 	// Update styles from config
 	if cfg.Style.BorderColor != "" {
 		FocusedColumnStyle = FocusedColumnStyle.BorderForeground(lipgloss.Color(cfg.Style.BorderColor))
@@ -126,7 +126,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		for i := range m.Columns {
 			m.Columns[i].Tasks = []domain.Task{}
 		}
-		
+
 		for _, t := range msg {
 			switch t.Status {
 			case domain.StatusTodo:
@@ -137,15 +137,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.Columns[2].Tasks = append(m.Columns[2].Tasks, t)
 			}
 		}
-		
+
 		// Ensure focus is set
 		m.Columns[m.FocusedCol].Focused = true
-		
+
 		// Refresh cursors
 		for i := range m.Columns {
 			m.Columns[i].SetTasks(m.Columns[i].Tasks)
 		}
-		
+
 	case errMsg:
 		m.Err = msg
 		return m, tea.Quit
@@ -162,23 +162,23 @@ func (m Model) moveTask(direction int) (tea.Model, tea.Cmd) {
 	if len(col.Tasks) == 0 {
 		return m, nil
 	}
-	
+
 	task := col.Tasks[col.Cursor]
 	newColIdx := m.FocusedCol + direction
-	
+
 	if newColIdx < 0 || newColIdx >= len(m.Columns) {
 		return m, nil
 	}
-	
+
 	// Update task status
 	task.Status = m.Columns[newColIdx].Status
-	
+
 	// Save to repo
 	if err := m.Repo.Update(&task); err != nil {
 		m.Err = err
 		return m, nil // Or show error
 	}
-	
+
 	// Reload tasks to refresh view
 	return m, m.loadTasks
 }
@@ -200,7 +200,7 @@ func (m Model) openDetail() (tea.Model, tea.Cmd) {
 	}
 
 	content := "# " + task.Title + "\n\n" + task.Description
-	
+
 	if len(task.Comments) > 0 {
 		content += "\n\n## Comments\n"
 		for _, c := range task.Comments {
@@ -227,11 +227,11 @@ func (m Model) View() string {
 	if m.State == DetailView {
 		return m.Viewport.View()
 	}
-	
+
 	var cols []string
 	for _, c := range m.Columns {
 		cols = append(cols, c.View())
 	}
-	
+
 	return lipgloss.JoinHorizontal(lipgloss.Top, cols...)
 }

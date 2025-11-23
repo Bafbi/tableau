@@ -19,7 +19,7 @@ var boardCmd = &cobra.Command{
 			return err
 		}
 		r := repo.NewFSRepository(cwd)
-		
+
 		// Ensure repo is initialized
 		if err := r.Init(); err != nil {
 			return err

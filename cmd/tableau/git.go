@@ -28,14 +28,14 @@ var startCmd = &cobra.Command{
 			return err
 		}
 		r := repo.NewFSRepository(cwd)
-		
+
 		task, err := r.Get(id)
 		if err != nil {
 			return err
 		}
 
 		g := git.NewClient()
-		
+
 		branchName := task.Branch
 		if branchName == "" {
 			slug := strings.ToLower(strings.ReplaceAll(task.Title, " ", "-"))
@@ -62,7 +62,7 @@ var startCmd = &cobra.Command{
 		if err := r.Update(task); err != nil {
 			return err
 		}
-		
+
 		fmt.Printf("Task %d started\n", task.ID)
 		return nil
 	},
