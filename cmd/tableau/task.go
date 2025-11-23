@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"os/exec"
 	"strconv"
@@ -32,6 +33,7 @@ var newCmd = &cobra.Command{
 			Priority: domain.PriorityMedium,
 		}
 		
+		slog.Debug("Creating task", "title", title)
 		if err := r.Create(task); err != nil {
 			return err
 		}
@@ -57,6 +59,9 @@ var listCmd = &cobra.Command{
 		var filter query.Filter
 		if len(args) > 0 {
 			filter = query.Parse(strings.Join(args, " "))
+			slog.Debug("Filtering tasks", "query", args, "parsed", filter)
+		} else {
+			slog.Debug("Listing all tasks")
 		}
 
 		w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
@@ -98,6 +103,7 @@ var editCmd = &cobra.Command{
 			editor = "vim"
 		}
 
+		slog.Debug("Opening editor", "editor", editor, "file", task.FilePath)
 		c := exec.Command(editor, task.FilePath)
 		c.Stdin = os.Stdin
 		c.Stdout = os.Stdout

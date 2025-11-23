@@ -2,6 +2,7 @@ package repo
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -79,6 +80,7 @@ func (r *FSRepository) Create(task *domain.Task) error {
 
 	task.FilePath = path
 
+	slog.Debug("Writing task file", "path", path)
 	data, err := MarshalTask(task)
 	if err != nil {
 		return err
@@ -153,5 +155,6 @@ func (r *FSRepository) Update(task *domain.Task) error {
 		return err
 	}
 	
+	slog.Debug("Updating task file", "path", oldPath)
 	return os.WriteFile(oldPath, data, 0644)
 }

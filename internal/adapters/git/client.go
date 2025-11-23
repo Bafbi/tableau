@@ -1,6 +1,7 @@
 package git
 
 import (
+	"log/slog"
 	"os/exec"
 	"strings"
 )
@@ -12,6 +13,7 @@ func NewClient() *Client {
 }
 
 func (c *Client) CurrentBranch() (string, error) {
+	slog.Debug("Running git rev-parse --abbrev-ref HEAD")
 	out, err := exec.Command("git", "rev-parse", "--abbrev-ref", "HEAD").Output()
 	if err != nil {
 		return "", err
@@ -20,14 +22,17 @@ func (c *Client) CurrentBranch() (string, error) {
 }
 
 func (c *Client) Checkout(branch string) error {
+	slog.Debug("Running git checkout", "branch", branch)
 	return exec.Command("git", "checkout", branch).Run()
 }
 
 func (c *Client) CreateBranch(branch string) error {
+	slog.Debug("Running git checkout -b", "branch", branch)
 	return exec.Command("git", "checkout", "-b", branch).Run()
 }
 
 func (c *Client) BranchExists(branch string) bool {
+	slog.Debug("Running git rev-parse --verify", "branch", branch)
 	err := exec.Command("git", "rev-parse", "--verify", branch).Run()
 	return err == nil
 }

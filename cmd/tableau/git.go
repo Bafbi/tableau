@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"strconv"
 	"strings"
@@ -42,11 +43,13 @@ var startCmd = &cobra.Command{
 		}
 
 		if g.BranchExists(branchName) {
+			slog.Debug("Branch exists, checking out", "branch", branchName)
 			fmt.Printf("Switching to branch %s\n", branchName)
 			if err := g.Checkout(branchName); err != nil {
 				return err
 			}
 		} else {
+			slog.Debug("Creating new branch", "branch", branchName)
 			fmt.Printf("Creating branch %s\n", branchName)
 			if err := g.CreateBranch(branchName); err != nil {
 				return err
