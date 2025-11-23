@@ -25,6 +25,7 @@ type Model struct {
 	FocusedCol int
 	State      State
 	Viewport   viewport.Model
+	Renderer   *glamour.TermRenderer
 	Quitting   bool
 	Err        error
 }
@@ -48,6 +49,11 @@ func NewModel(repo domain.TaskRepository) Model {
 		BorderForeground(lipgloss.Color("62")).
 		PaddingRight(2)
 
+	renderer, _ := glamour.NewTermRenderer(
+		glamour.WithAutoStyle(),
+		glamour.WithWordWrap(78),
+	)
+
 	return Model{
 		Repo:   repo,
 		Config: cfg,
@@ -59,6 +65,7 @@ func NewModel(repo domain.TaskRepository) Model {
 		FocusedCol: 0,
 		State:      BoardView,
 		Viewport:   vp,
+		Renderer:   renderer,
 	}
 }
 
@@ -190,15 +197,6 @@ func (m Model) openDetail() (tea.Model, tea.Cmd) {
 	}
 	task := col.Tasks[col.Cursor]
 
-	renderer, err := glamour.NewTermRenderer(
-		glamour.WithAutoStyle(),
-		glamour.WithWordWrap(78),
-	)
-	if err != nil {
-		m.Err = err
-		return m, nil
-	}
-
 	content := "# " + task.Title + "\n\n" + task.Description
 
 	if len(task.Comments) > 0 {
@@ -208,7 +206,7 @@ func (m Model) openDetail() (tea.Model, tea.Cmd) {
 		}
 	}
 
-	str, err := renderer.Render(content)
+	str, err := m.Renderer.Render(content)
 	if err != nil {
 		m.Err = err
 		return m, nil
